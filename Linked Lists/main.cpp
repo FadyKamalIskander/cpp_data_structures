@@ -3,11 +3,11 @@
 class Node
 {
 public:
-    int value;
+    int val;
     Node *next;
     Node (int value)
     {
-        this->value = value;
+        this->val = value;
         next = nullptr;
     }
 };
@@ -25,41 +25,111 @@ public:
         tail = head;
         length = 1;
     }
-    ~LinkedList() {}
-    void append(int value) {}
-    void prepend(int value) {}
-    bool insert(int index, int value){}
-    void printList()
+    ~LinkedList()
     {
         Node* temp = head;
+        while (head)
+        {
+            head = head->next;
+            delete temp;
+            temp = head;
+        }
+    }
+    void append(int value)
+    {
+        if (length == 0)
+        {
+            head = new Node(value);
+            tail = head;
+        }
+        else
+        {
+            const auto temp = new Node(value);
+            tail->next = temp;
+            tail = temp;
+        }
+        length++;
+    }
+
+    void deleteLast()
+    {
+        if (length == 0) return;
+        else if (length == 1)
+        {
+            delete tail;
+            head = nullptr;
+            tail = nullptr;
+            length--;
+        }
+        else
+        {
+            int i = length;
+            Node* tempNode = head;
+            while (i > 2)
+            {
+                tempNode = tempNode->next;
+                i--;
+            }
+            tail = tempNode;
+            tail->next = nullptr;
+            length--;
+            delete tail->next;
+            tempNode = nullptr;
+        }
+    }
+    //void prepend(int value) {}
+    //bool insert(int index, int value){}
+    void printList() const
+    {
+        const Node* temp = head;
         while (temp != nullptr)
         {
-            std::cout << temp->value << std::endl;
+            std::cout << temp->val << std::endl;
             temp = temp->next;
         }
     }
     void getHead() const
     {
-        std::cout << "Head: " << head->value << std::endl;
+        if (head != nullptr)
+        {
+            std::cout << "Head: " << head->val << std::endl;
+        }
+        else
+        {
+            std::cout << "Head is empty" << std::endl;
+        }
     }
     void getTail() const
     {
-        std::cout << "Tail: " << tail->value << std::endl;
+        if (tail != nullptr)
+        {
+            std::cout << "Tail: " << tail->val << std::endl;
+        }
+        else
+        {
+            std::cout << "Tail is empty" << std::endl;
+        }
     }
-
     void getLength() const
     {
         std::cout << "Length: " << length << std::endl;
     }
 };
 
-
 int main()
 {
-    LinkedList *myLinkedList = new LinkedList(4);
+    auto *myLinkedList = new LinkedList(1);
+    myLinkedList->deleteLast();
+    myLinkedList->append(1);
+    myLinkedList->append(2);
+    myLinkedList->append(3);
+    myLinkedList->append(4);
+    myLinkedList->append(5);
     myLinkedList->getHead();
     myLinkedList->getTail();
     myLinkedList->getLength();
+    myLinkedList->printList();
+    myLinkedList->deleteLast();
     myLinkedList->printList();
     delete myLinkedList;
     return 0;
