@@ -77,7 +77,41 @@ public:
             tempNode = nullptr;
         }
     }
-    //void prepend(int value) {}
+    void prepend(int value)
+    {
+        if (length == 0)
+        {
+            head = new Node(value);
+            tail = head;
+            length++;
+        }
+        else
+        {
+            auto tempNode = new Node(value);
+            tempNode->next = head;
+            head = tempNode;
+            length++;
+        }
+    }
+
+    void deleteFirst()
+    {
+        if (length == 0) return;
+        else if (length == 1)
+        {
+            delete tail;
+            head = nullptr;
+            tail = nullptr;
+            length--;
+        }
+        else
+        {
+            auto temp = head;
+            head = head->next;
+            delete temp;
+            length--;
+        }
+    }
     //bool insert(int index, int value){}
     void printList() const
     {
