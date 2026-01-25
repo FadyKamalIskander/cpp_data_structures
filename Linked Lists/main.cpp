@@ -127,13 +127,11 @@ public:
             if (index == 0)
             {
                 prepend(newNode->val);
-                length++;
                 return true;
             }
             else if (index == length - 1)
             {
                 append(newNode->val);
-                length++;
                 return true;
             }
             else
@@ -229,6 +227,61 @@ public:
             return true;
         }
     }
+
+    bool deleteNode(int index)
+    {
+        if (index < 0 || index > length || length == 0)
+        {
+            return false;
+        }
+        else if (length == 1)
+        {
+            head = nullptr;
+            tail = nullptr;
+            length--;
+            return true;
+        }
+        else
+        {
+            Node *tempNode = head;
+            Node* tempNode2 = head->next;
+            if (index == 0)
+            {
+                head = tempNode2;
+                delete tempNode;
+                length--;
+                return true;
+            }
+            else
+            {
+                for (int i = 0; i < index; i++)
+                {
+                    tempNode2 = tempNode;
+                    tempNode = tempNode->next;
+                }
+                tempNode2->next = tempNode->next;
+                delete tempNode;
+                length--;
+                return true;
+            }
+        }
+    }
+
+    void reverse()
+    {
+        auto tempo = tail;
+        tail = head;
+        Node* tempNode = head;
+        Node* tempNode2 = head->next;
+        Node* tempNode3 = tempNode2->next;
+        head = tempo;
+        for (int i = 0; i < length; i++)
+        {
+            tempNode2->next = tempNode;
+            tempNode = tempNode2;
+            tempNode2 = tempNode3;
+        }
+    }
 };
 
 int main()
@@ -245,7 +298,7 @@ int main()
     myLinkedList->insert(newNode2, 0);
     myLinkedList->printList();
     Node* newNode3 = new Node(778);
-    myLinkedList->insert(newNode3, 6);
+    myLinkedList->insert(newNode3, 5);
     myLinkedList->printList();
     Node* newNode4 = new Node(567);
     myLinkedList->insert(newNode4, 2);
@@ -256,6 +309,14 @@ int main()
   //  myLinkedList->printList();
   //  myLinkedList->deleteLast();
   //  myLinkedList->printList();
+  //  myLinkedList->deleteNode(0);
+  //  myLinkedList->printList();
+  //  myLinkedList->deleteNode(6);
+  //  myLinkedList->printList();
+  //  myLinkedList->deleteNode(3);
+  //  myLinkedList->printList();
+    myLinkedList->reverse();
+    myLinkedList->printList();
     delete myLinkedList;
     return 0;
 }
