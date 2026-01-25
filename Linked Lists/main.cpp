@@ -50,7 +50,6 @@ public:
         }
         length++;
     }
-
     void deleteLast()
     {
         if (length == 0) return;
@@ -74,7 +73,6 @@ public:
             tail->next = nullptr;
             length--;
             delete tail->next;
-            tempNode = nullptr;
         }
     }
     void prepend(int value)
@@ -93,7 +91,6 @@ public:
             length++;
         }
     }
-
     void deleteFirst()
     {
         if (length == 0) return;
@@ -112,10 +109,48 @@ public:
             length--;
         }
     }
-    //bool insert(int index, int value){}
+
+    bool insert(Node* newNode, int index)
+    {
+        if (index < 0|| index > length)
+        {
+            return false;
+        }
+        if (length == 0)
+        {
+            head = newNode;
+            length++;
+            return true;
+        }
+        else
+        {
+            if (index == 0)
+            {
+                prepend(newNode->val);
+                length++;
+                return true;
+            }
+            else if (index == length - 1)
+            {
+                append(newNode->val);
+                length++;
+                return true;
+            }
+            else
+            {
+                Node* tempNode = get(index);
+                auto temporar = tempNode->next;
+                tempNode->next = newNode;
+                newNode->next = temporar;
+                length++;
+                return true;
+            }
+        }
+    }
     void printList() const
     {
         const Node* temp = head;
+        std::cout << "Linked List:" << std::endl;
         while (temp != nullptr)
         {
             std::cout << temp->val << std::endl;
@@ -148,6 +183,52 @@ public:
     {
         std::cout << "Length: " << length << std::endl;
     }
+    Node* get(int index) const
+    {
+        if (index < 0|| index > length||length == 0)
+        {
+            return nullptr;
+        }
+        else if (length == 1)
+        {
+            return head;
+        }
+        else
+        {
+            Node* tempNode = head;
+            int i = 0;
+            while (i < index)
+            {
+                tempNode = tempNode->next;
+                i++;
+            }
+            return tempNode;
+        }
+    }
+    bool set(int index, int inputValue) const
+    {
+        if (index < 0|| index > length||length == 0)
+        {
+            return false;
+        }
+        else if (length == 1)
+        {
+            head->val = inputValue;
+            return true;
+        }
+        else
+        {
+            Node* tempNode = head;
+            int i = 0;
+            while (i < index)
+            {
+                tempNode = tempNode->next;
+                i++;
+            }
+            tempNode->val = inputValue;
+            return true;
+        }
+    }
 };
 
 int main()
@@ -159,12 +240,22 @@ int main()
     myLinkedList->append(3);
     myLinkedList->append(4);
     myLinkedList->append(5);
-    myLinkedList->getHead();
-    myLinkedList->getTail();
-    myLinkedList->getLength();
     myLinkedList->printList();
-    myLinkedList->deleteLast();
+    Node* newNode2 = new Node(669);
+    myLinkedList->insert(newNode2, 0);
     myLinkedList->printList();
+    Node* newNode3 = new Node(778);
+    myLinkedList->insert(newNode3, 6);
+    myLinkedList->printList();
+    Node* newNode4 = new Node(567);
+    myLinkedList->insert(newNode4, 2);
+    myLinkedList->printList();
+  //  myLinkedList->getHead();
+  //  myLinkedList->getTail();
+  //  myLinkedList->getLength();
+  //  myLinkedList->printList();
+  //  myLinkedList->deleteLast();
+  //  myLinkedList->printList();
     delete myLinkedList;
     return 0;
 }
