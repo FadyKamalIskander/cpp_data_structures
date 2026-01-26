@@ -273,14 +273,18 @@ public:
         tail = head;
         Node* tempNode = head;
         Node* tempNode2 = head->next;
-        Node* tempNode3 = tempNode2->next;
-        head = tempo;
-        for (int i = 0; i < length; i++)
+        Node* tempNode3 = new Node(0);
+        tail->next = nullptr;
+
+        for (int i = 0; i < length-1; i++)
         {
+            tempNode3 = tempNode2->next;
             tempNode2->next = tempNode;
             tempNode = tempNode2;
             tempNode2 = tempNode3;
         }
+        head = tempo;
+        head->next = tempNode2;
     }
 };
 
