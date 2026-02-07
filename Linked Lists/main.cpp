@@ -156,7 +156,7 @@ public:
             temp = temp->next;
         }
     }
-    void getHead() const
+    Node* getHead() const
     {
         if (head != nullptr)
         {
@@ -166,8 +166,9 @@ public:
         {
             std::cout << "Head is empty" << std::endl;
         }
+        return head;
     }
-    void getTail() const
+    Node* getTail() const
     {
         if (tail != nullptr)
         {
@@ -177,6 +178,7 @@ public:
         {
             std::cout << "Tail is empty" << std::endl;
         }
+        return tail;
     }
     void getLength() const
     {
@@ -322,12 +324,30 @@ public:
         }
         return tempNode;
     }
+
+    bool hasLoop()
+    {
+        if (length == 0) return false;
+        if ((head->next == head) || (tail->next == head)) return true;
+        Node* nodeSlow = head;
+        Node* nodeFast = head->next;
+        while (true)
+        {
+            nodeSlow = nodeSlow->next;
+            for (int i = 0; i < 2; i++)
+            {
+                nodeFast = nodeFast->next;
+                if (nodeFast == nullptr) return false;
+                if (nodeSlow == nodeFast) return true;
+            }
+        }
+    }
 };
 
 int main()
 {
-    auto *myLinkedList = new LinkedList(1);
-    myLinkedList->deleteLast();
+    //auto *myLinkedList = new LinkedList(1);
+    /*myLinkedList->deleteLast();
     myLinkedList->append(1);
     myLinkedList->append(2);
     myLinkedList->append(3);
@@ -335,7 +355,7 @@ int main()
     myLinkedList->append(5);
     myLinkedList->append(6);
     myLinkedList->append(7);
-    myLinkedList->printList();
+    myLinkedList->printList();*/
     //  myLinkedList->insert(0, 669);
     //  myLinkedList->printList();
     //  myLinkedList->insert(5, 6);
@@ -356,7 +376,15 @@ int main()
     //  myLinkedList->printList();
     //  myLinkedList->reverse();
     //  myLinkedList->printList();
-    std::cout << "middle index is: " << myLinkedList->findMiddleNode() << std::endl;;
-    delete myLinkedList;
+    LinkedList myLinkedList(1);
+    Node* tail = myLinkedList.getTail();
+    tail->next = myLinkedList.getHead();
+
+    // Can't print the list because it has a loop!
+
+    bool hasLoop = myLinkedList.hasLoop();
+    std::cout << hasLoop << std::endl;
+    //std::cout << "middle index is: " << myLinkedList->findMiddleNode() << std::endl;;
+    //delete myLinkedList;
     return 0;
 }
